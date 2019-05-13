@@ -1,9 +1,9 @@
-import view.ClientView;
+import view.ConnectorView;
 
 public class Client {
 
     public static void main(String[] args) {
-        ClientView view = new ClientView();
+        ConnectorView view = new ConnectorView();
         view.setVisible(true);
     }
 }

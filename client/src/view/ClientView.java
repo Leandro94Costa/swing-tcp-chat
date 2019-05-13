@@ -27,8 +27,12 @@ public class ClientView extends JFrame {
     private Socket socket;
     private ChatMessage message;
     private ClientService service;
+    private String host;
+    private int port;
 
-    public ClientView() {
+    public ClientView(String host, int port) {
+        this.host = host;
+        this.port = port;
         initComponents();
         listeners();
     }
@@ -51,7 +55,7 @@ public class ClientView extends JFrame {
                 this.message.setName(name);
 
                 this.service = new ClientService();
-                this.socket = this.service.connect();
+                this.socket = this.service.connect(host, port);
 
                 new Thread(new ListenerSocket(this.socket)).start();
 
@@ -59,8 +63,10 @@ public class ClientView extends JFrame {
             }
         });
         sairButton.addActionListener(e -> {
-            this.message.setAction(Action.DISCONNECT);
-            this.service.send(this.message);
+            ChatMessage message = new ChatMessage();
+            message.setName(this.message.getName());
+            message.setAction(Action.DISCONNECT);
+            this.service.send(message);
             disconnected();
         });
         enviarButton.addActionListener(e -> {
@@ -95,7 +101,7 @@ public class ClientView extends JFrame {
 
         private ObjectInputStream input;
 
-        public ListenerSocket(Socket socket) {
+        ListenerSocket(Socket socket) {
             try {
                 this.input = new ObjectInputStream(socket.getInputStream());
             } catch (IOException e) {

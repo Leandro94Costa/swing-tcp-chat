@@ -19,11 +19,11 @@ public class ServerService {
     private Socket socket;
     private Map<String, ObjectOutputStream> mapOnline = new HashMap<>();
 
-    public ServerService() {
+    public ServerService(int port) {
         try {
-            serverSocket = new ServerSocket(5555);
+            serverSocket = new ServerSocket(port);
 
-            System.out.println("Servidor iniciado!");
+            System.out.println("Servidor iniciado na porta " + port);
 
             while (true) {
                 socket = serverSocket.accept();
@@ -87,7 +87,7 @@ public class ServerService {
 
     private boolean connect(ChatMessage message, ObjectOutputStream output) {
         if (mapOnline.size() == 0) {
-            message.setText("Hell Yeah!");
+            message.setText("Yeah!");
             send(message, output);
             return true;
         }
